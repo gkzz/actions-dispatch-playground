@@ -1,0 +1,39 @@
+name: Modify manifest
+'on':
+  push:
+    branches:
+#      - 'main'
+      - 'ignored'
+
+jobs:
+  main:
+    runs-on: 'ubuntu-20.04'
+    env:
+      MANIFEST_PATH: 'manifests'
+      REGISTRY: 'your_registry'
+      CONTAINER_IMAGE: 'your_container_image'
+
+    steps:
+      - uses: actions/checkout@v2
+      - run: echo -n "github.workspace ${{ github.workspace }}"
+      - run: pwd
+      - run: ls -la
+
+
+      - name: Modify image tag
+        uses: addnab/docker-run-action@v3
+        with:
+          ## yqのイメージを指定
+          image: linuxserver/yq:2.13.0
+          ## docker runコマンドで渡していたオプションを書く
+          ## -vオプションの使い方はやや注意なので後述
+          options: >
+            --rm -v ${{ github.workspace }}/${{ env.MANIFEST_PATH }}:/opt/${{ env.MANIFEST_PATH }}
+            -w=/opt/${{ env.MANIFEST_PATH }}
+            --entrypoint yq
+          shell: bash
+          ## ">"を使い、yqのコンテナの中で実行するコマンドを見やすくするために適宜改行する
+          run: >
+            yq -ry '.spec.template.spec.containers[0].image 
+            |="'${{ env.REGISTRY }}'/'${{ env.CONTAINER_IMAGE }}':'${{ github.sha }}'"'
+            /opt/${{ env.MANIFEST_PATH }}/deployment.yml.tmpl > /opt/${{ env.MANIFEST_PATH }}/deployment.yml

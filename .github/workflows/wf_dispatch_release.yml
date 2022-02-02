@@ -1,0 +1,27 @@
+name: Subsequent workflow (workflow_dispatch)
+
+on:
+  workflow_dispatch:
+    inputs:
+      github_sha:
+        description: "App's repository sha"
+        required: true
+        default: "github_sha_not_found"
+      appwf_url:
+        description: "App's workflow url"
+        required: true
+        default: "appwf_url_not_found"
+
+
+jobs:
+  main:
+    runs-on: 'ubuntu-20.04'
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: echo inputs from workflow dispatch
+        run: |
+          echo "App's repository sha"
+          echo "'${{ github.event.inputs.github_sha }}'"
+          echo "App's workflow url"
+          echo "'${{ github.event.inputs.appwf_url }}'"
