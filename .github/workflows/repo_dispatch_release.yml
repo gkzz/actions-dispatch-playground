@@ -10,7 +10,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-        id: checkout_action
         if: github.event.client_payload.ref == 'main'
       - name: echo inputs from repository dispatch
         if: github.event.client_payload.ref == 'main'
