@@ -14,11 +14,15 @@ jobs:
   echo:
     runs-on: 'ubuntu-20.04'
     needs: [check_ref]
-    if: steps.check_ref.conclusion == 'skipped'
     steps:
+      - name: check previous job
+        run: if [[ ${{ steps.check_ref.conclusion }} == 'skipped' ]]; then exit 0; else exit 1; fi
       - name: echo inputs from repository dispatch
+        if: success()
         run: |
           echo "App's repository sha"
           echo "'${{ github.event.client_payload.github_sha }}'"
           echo "App's workflow url"
           echo "'${{ github.event.client_payload.appwf_url }}'"
+      - name: echo "failed"
+        run : echo "failed"
