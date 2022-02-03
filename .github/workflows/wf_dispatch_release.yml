@@ -19,9 +19,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-        if: github.event.inputs.ref == 'main'
+        if: github.event.inputs.ref == 'work'
       - name: echo inputs from workflow dispatch
-        if: github.event.inputs.ref == 'main'
+        if: github.event.inputs.ref == 'work'
         run: |
           echo "App's repository sha"
           echo "'${{ github.event.inputs.github_sha }}'"
