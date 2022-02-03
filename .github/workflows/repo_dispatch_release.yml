@@ -5,26 +5,17 @@ name: Subsequent workflow (repository_dispatch)
 
 
 jobs:
-  check_ref:
+  main:
     runs-on: 'ubuntu-20.04'
 
     steps:
       - uses: actions/checkout@v2
+        id: checkout_action
         if: github.event.client_payload.ref == 'main'
-  echo:
-    runs-on: 'ubuntu-20.04'
-    needs: [check_ref]
-    # https://docs.github.com/en/actions/learn-github-actions/contexts#steps-context
-    if: ${{ steps.check_ref.conclusion }} == 'success'
-    steps:
-      #- name: check previous job
-      #  run: if [[ ${{ steps.check_ref.conclusion }} == 'skipped' ]]; then exit 0; else exit 1; fi
       - name: echo inputs from repository dispatch
-        if: success()
+        if: github.event.client_payload.ref == 'main'
         run: |
           echo "App's repository sha"
           echo "'${{ github.event.client_payload.github_sha }}'"
           echo "App's workflow url"
           echo "'${{ github.event.client_payload.appwf_url }}'"
-      - name: echo "failed"
-        run : echo "failed"
