@@ -5,11 +5,17 @@ name: Subsequent workflow (repository_dispatch)
 
 
 jobs:
-  main:
+  check_ref:
     runs-on: 'ubuntu-20.04'
 
     steps:
       - uses: actions/checkout@v2
+        if: github.event.client_payload.ref == 'work'
+  echo:
+    runs-on: 'ubuntu-20.04'
+    needs: [check_ref]
+    if: needs.check_ref.result == 'skipped'
+    steps:
       - name: echo inputs from repository dispatch
         run: |
           echo "App's repository sha"
