@@ -3,10 +3,6 @@ name: Subsequent workflow (workflow_dispatch)
 on:
   workflow_dispatch:
     inputs:
-      ref:
-        description: "App's workflow ref"
-        required: true
-        default: "ref_not_found"
       github_sha:
         description: "App's repository sha"
         required: true
@@ -22,11 +18,11 @@ jobs:
     runs-on: 'ubuntu-20.04'
 
     steps:
-      - run: echo ${{ github.event.inputs.ref }}
+      - run: echo ${{ github.event.ref }}
       - uses: actions/checkout@v2
-        if: github.event.inputs.ref == 'work'
+        if: github.event.ref == 'work'
       - name: echo inputs from workflow dispatch
-        if: github.event.inputs.ref == 'work'
+        if: github.event.ref == 'work'
         run: |
           echo "App's repository sha"
           echo "'${{ github.event.inputs.github_sha }}'"
