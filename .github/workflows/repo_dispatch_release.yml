@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@v2
         if: github.event.client_payload.ref == 'work'
         with:
-          ref: ${{ github.event.client_payload¥.ref }}
+          ref: ${{ github.event.client_payload.ref }}
       - name: echo inputs from repository dispatch
         if: github.event.client_payload.ref == 'main'
         run: |
