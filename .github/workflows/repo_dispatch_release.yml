@@ -14,7 +14,6 @@ jobs:
   echo:
     runs-on: 'ubuntu-20.04'
     needs: [check_ref]
-    #if: needs.check_ref.result == 'skipped'
     steps:
       - name: echo inputs from repository dispatch
         run: |
