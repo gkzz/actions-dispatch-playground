@@ -3,6 +3,10 @@ name: Subsequent workflow (workflow_dispatch)
 on:
   workflow_dispatch:
     inputs:
+      ref:
+        description: "App's workflow ref"
+        required: true
+        default: "ref_not_found"
       github_sha:
         description: "App's repository sha"
         required: true
