@@ -10,10 +10,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-        if: github.event.client_payload.ref == 'work'
+        if: github.event.client_payload.ref == 'main'
   echo:
     runs-on: 'ubuntu-20.04'
     needs: [check_ref]
+    if: steps.check_ref.conclusion == 'skipped'
     steps:
       - name: echo inputs from repository dispatch
         run: |
